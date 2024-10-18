@@ -18,13 +18,13 @@ pub fn emscriptenRunStep(b: *std.Build) !*std.Build.Step.Run {
         emrun_run_arg = try std.fmt.bufPrint(
             emrun_run_arg,
             "{s}",
-            .{ emrunExe }
+            .{emrunExe},
         );
     } else {
         emrun_run_arg = try std.fmt.bufPrint(
             emrun_run_arg,
             "{s}" ++ std.fs.path.sep_str ++ "{s}",
-            .{ b.sysroot.?, emrunExe }
+            .{ b.sysroot.?, emrunExe },
         );
     }
 
@@ -81,7 +81,7 @@ pub fn linkWithEmscripten(
         emcc_run_arg = try std.fmt.bufPrint(
             emcc_run_arg,
             "{s}",
-            .{ emccExe }
+            .{emccExe},
         );
     } else {
         emcc_run_arg = try std.fmt.bufPrint(
@@ -91,9 +91,6 @@ pub fn linkWithEmscripten(
         );
     }
 
-    // Create the output directory because emcc can't do it.
-    const mkdir_command = b.addSystemCommand(&[_][]const u8{ "mkdir", "-p", emccOutputDir });
-
     // Actually link everything together.
     const emcc_command = b.addSystemCommand(&[_][]const u8{emcc_run_arg});
 
@@ -101,8 +98,11 @@ pub fn linkWithEmscripten(
         emcc_command.addFileArg(item.getEmittedBin());
         emcc_command.step.dependOn(&item.step);
     }
+
+    // Create the output directory because emcc can't do it.
+    try b.build_root.handle.makePath(emccOutputDir);
+
     // This puts the file in zig-out/htmlout/index.html.
-    emcc_command.step.dependOn(&mkdir_command.step);
     emcc_command.addArgs(&[_][]const u8{
         "-o",
         emccOutputDir ++ emccOutputFile,

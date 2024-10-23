@@ -46,6 +46,11 @@ const Program = struct {
     desc: []const u8,
 };
 
+const LibOptions = struct {
+    name: []const u8,
+    define_c_macro: ?[]const u8,
+};
+
 fn link(
     b: *std.Build,
     exe: *std.Build.Step.Compile,
@@ -115,6 +120,24 @@ fn getRaylib(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.buil
         });
 
         const lib = raylib.artifact("raylib");
+
+        // Apply any custom arguments to raylib
+        const examples = [_]LibOptions{
+            .{
+                .name = "custom_frame_control",
+                .define_c_macro = "SUPPORT_CUSTOM_FRAME_CONTROL",
+            },
+        };
+
+        for (examples) |ex| {
+            if (b.)
+            if (ex.define_c_macro) |c_macro| {
+                lib.defineCMacro(c_macro, null);
+            }
+        }
+
+        // for (examples) |ex| {}
+        // lib.defineCMacro("SUPPORT_CUSTOM_FRAME_CONTROL", null);
 
         const raygui_dep = b.dependency("raygui", .{
             .target = target,
@@ -245,6 +268,11 @@ pub fn build(b: *std.Build) !void {
             .name = "3d_picking",
             .path = "examples/core/3d_picking.zig",
             .desc = "Shows picking in 3d mode",
+        },
+        .{
+            .name = "custom_frame_control",
+            .path = "examples/core/custom_frame_control.zig",
+            .desc = "Shows custom frame rate control",
         },
         .{
             .name = "window_flags",

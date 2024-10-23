@@ -247,6 +247,11 @@ pub fn build(b: *std.Build) !void {
             .desc = "Shows picking in 3d mode",
         },
         .{
+            .name = "world_screen",
+            .path = "examples/core/world_screen.zig",
+            .desc = "Shows conversion between wold and screen coordinates",
+        },
+        .{
             .name = "window_flags",
             .path = "examples/core/window_flags.zig",
             .desc = "Demonstrates various flags used during and after window creation",

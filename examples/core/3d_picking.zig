@@ -8,6 +8,7 @@ pub fn main() anyerror!void {
     const screenHeight = 450;
 
     rl.initWindow(screenWidth, screenHeight, "raylib-zig [core] example - 3d picking");
+    defer rl.closeWindow();
 
     // Define the camera to look into our 3d world
     var camera = rl.Camera{

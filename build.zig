@@ -267,6 +267,11 @@ pub fn build(b: *std.Build) !void {
             .desc = "Renders the raylib-zig logo",
         },
         .{
+            .name = "shapes_top_down_lights",
+            .path = "examples/shapes/shapes_top_down_lights.zig",
+            .desc = "Rendering 2d shadows",
+        },
+        .{
             .name = "sprite_anim",
             .path = "examples/textures/sprite_anim.zig",
             .desc = "Animate a sprite",
